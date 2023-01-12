@@ -29,28 +29,25 @@ const parrot = (id) => {
   }
   return { getId, src };
 };
-
 function numberOfCards() {
-  //pegando a quantidade de cards
   let cardAmount = 0;
   while (cardAmount < 4 || cardAmount > 14 || cardAmount % 2 !== 0) {
     cardAmount = prompt("Digite a quantidade de cards (entre 4 a 14)");
   }
+  console.log(`>> peguei a quantidade de cards: ${cardAmount}`);
   return cardAmount;
 }
-
 function amountOfCards(amount) {
-  // criando os object com id e img src
   let cardList = [];
   for (let i = 1; i <= amount; i++) {
     const parrotCard = parrot(i);
     cardList.push(parrotCard);
   }
+  console.log(`>> criei objects: ${cardList}`);
   return cardList;
 }
 
 function cardElements(obj) {
-  // criando os elemento html dos card
   let allCards = [];
   function theCard(id, imgSrc) {
     const frontFaceImg = document.createElement("img");
@@ -82,11 +79,18 @@ function cardElements(obj) {
   obj.forEach((element) => {
     allCards.push(theCard(element.getId(), element.src));
   });
+  console.log(`>> transformei tudo em elementos html (cards) ${allCards}`);
   return allCards;
 }
+function multiplyElements(elements) {
+  const doubleSize = [];
+  for (let i = 0; i < elements.length; i++) {
+    for (let j = 0; j < 2; j++) {
+      doubleSize.push(elements[i]);
+    }
+  }
+  console.log(`>> criei pares para as cartas ${doubleSize}`);
+  return doubleSize;
+}
+const duplicateElements = multiplyElements(cardElements(amountOfCards(numberOfCards() / 2)));
 
-let allCard = cardElements(amountOfCards(numberOfCards() / 2));
-let field = document.getElementById("gameCanva");
-allCard.forEach((element) => {
-  field.appendChild(element);
-});
