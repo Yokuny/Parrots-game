@@ -52,7 +52,7 @@ function theCard(id, imgSrc) {
   frontFaceImg.src = "./src/img/parrot.svg";
 
   const frontFace = document.createElement("div");
-  frontFace.id = "front-face";
+  frontFace.classList.add("front-face");
   frontFace.classList.add("face");
   frontFace.appendChild(frontFaceImg);
 
@@ -60,7 +60,7 @@ function theCard(id, imgSrc) {
   backFaceImg.src = imgSrc;
 
   const backFace = document.createElement("div");
-  backFace.id = "back-face";
+  backFace.classList.add("back-face");
   backFace.classList.add("face");
   backFace.appendChild(backFaceImg);
 
@@ -120,12 +120,9 @@ function renderAll(array) {
 renderAll(randomizing(cardElements(amountOfCards(numberOfCards() / 2))));
 
 function cardCheck(element) {
-
-  let back = element.querySelector("#back-face");
-  back.classList.add("card-selected-back");
-
-  let front = element.querySelector("#front-face");
-  front.classList.add("card-selected-front");
-  
+  const back = element.querySelector(".back-face");
+  const front = element.querySelector(".front-face");
+  back.classList.add("back-flip");
+  front.classList.add("front-flip");
 }
 
