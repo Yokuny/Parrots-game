@@ -46,51 +46,83 @@ function amountOfCards(amount) {
   console.log(`>> criei objects: ${cardList}`);
   return cardList;
 }
+function theCard(id, imgSrc) {
+  const frontFaceImg = document.createElement("img");
+  frontFaceImg.alt = "Parrot";
+  frontFaceImg.src = "./src/img/parrot.svg";
 
+  const frontFace = document.createElement("div");
+  frontFace.id = "front-face";
+  frontFace.classList.add("face");
+  frontFace.appendChild(frontFaceImg);
+
+  const backFaceImg = document.createElement("img");
+  backFaceImg.src = imgSrc;
+
+  const backFace = document.createElement("div");
+  backFace.id = "back-face";
+  backFace.classList.add("face");
+  backFace.appendChild(backFaceImg);
+
+  const cardElement = document.createElement("div");
+  cardElement.classList.add("card");
+  cardElement.id = id;
+  cardElement.addEventListener("click", function () {
+    cardCheck(this);
+  });
+
+  cardElement.appendChild(frontFace);
+  cardElement.appendChild(backFace);
+
+  return cardElement;
+}
 function cardElements(obj) {
   let allCards = [];
-  function theCard(id, imgSrc) {
-    const frontFaceImg = document.createElement("img");
-    frontFaceImg.alt = "Parrot";
-    frontFaceImg.src = "./src/img/parrot.svg";
-
-    const frontFace = document.createElement("div");
-    frontFace.classList.add("front-face");
-    frontFace.classList.add("face");
-    frontFace.appendChild(frontFaceImg);
-
-    const backFaceImg = document.createElement("img");
-    backFaceImg.src = imgSrc;
-
-    const backFace = document.createElement("div");
-    backFace.classList.add("back-face");
-    backFace.classList.add("face");
-    backFace.appendChild(backFaceImg);
-
-    const cardElement = document.createElement("div");
-    cardElement.classList.add("card");
-    cardElement.id = id;
-
-    cardElement.appendChild(frontFace);
-    cardElement.appendChild(backFace);
-
-    return cardElement;
-  }
   obj.forEach((element) => {
     allCards.push(theCard(element.getId(), element.src));
   });
-  console.log(`>> transformei tudo em elementos html (cards) ${allCards}`);
+  obj.forEach((element) => {
+    allCards.push(theCard(element.getId(), element.src));
+  });
+  console.log(`>> transformei tudo em elementos html (cards), e os dupliquei em pares`);
   return allCards;
 }
-function multiplyElements(elements) {
-  const doubleSize = [];
-  for (let i = 0; i < elements.length; i++) {
-    for (let j = 0; j < 2; j++) {
-      doubleSize.push(elements[i]);
-    }
+// function multiplyElements(elements) {
+//   const doubleSize = [];
+//   for (let i = 0; i < elements.length; i++) {
+//     for (let j = 0; j < 2; j++) {
+//       doubleSize.push(elements[i]);
+//     }
+//   }
+//   console.log(`>> criei pares para as cartas ${doubleSize}`);
+//   return doubleSize;
+// }
+function randomizing(array) {
+  let random;
+  let holding;
+  for (let i = array.length; i; ) {
+    random = (Math.random() * i--) | 0;
+    holding = array[random];
+    array[random] = array[i];
+    array[i] = holding;
   }
-  console.log(`>> criei pares para as cartas ${doubleSize}`);
-  return doubleSize;
+  return array;
 }
-const duplicateElements = multiplyElements(cardElements(amountOfCards(numberOfCards() / 2)));
+function renderAll(array) {
+  const canva = document.getElementById("gameCanva");
+  //console.log(array.length % 3);
+  //pensar em forma de selecionar o size
+  canva.classList.add("size4");
+  array.forEach((element) => {
+    canva.appendChild(element);
+  });
+}
+renderAll(randomizing(cardElements(amountOfCards(numberOfCards() / 2))));
+
+function cardCheck(element) {
+  let front = element.querySelector("#front-face");
+  front.classList.add("front-flip");
+  let back = element.querySelector("#back-face");
+  back.classList.add("back-flip");
+}
 

@@ -20,12 +20,18 @@ main .card .face {
     transition: all 700ms;
     transform-style: preserve-3d;
 }
-main .card .back-face {
+main .card #back-face {
     transform: rotateY(180deg);
 }
-main .card:hover .back-face {
+/* main .card:hover #back-face {
     transform: rotateY(0deg);
 }
-main .card:hover .front-face {
+main .card:hover #front-face {
+    transform: rotateY(-180deg);
+} */
+.front-flip{
+    transform: rotateY(180deg);
+}
+.back-flip{
     transform: rotateY(-180deg);
 }
