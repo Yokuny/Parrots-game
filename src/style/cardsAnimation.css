@@ -23,15 +23,19 @@ main .card .face {
 main .card #back-face {
     transform: rotateY(180deg);
 }
+
 /* main .card:hover #back-face {
     transform: rotateY(0deg);
 }
 main .card:hover #front-face {
     transform: rotateY(-180deg);
 } */
-.front-flip{
-    transform: rotateY(180deg);
-}
 .back-flip{
+    transform: rotateY(0deg);
+}
+.front-flip{
     transform: rotateY(-180deg);
+}
+.card-not-selected{
+    pointer-events: none;
 }

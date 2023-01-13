@@ -120,9 +120,12 @@ function renderAll(array) {
 renderAll(randomizing(cardElements(amountOfCards(numberOfCards() / 2))));
 
 function cardCheck(element) {
-  let front = element.querySelector("#front-face");
-  front.classList.add("front-flip");
+
   let back = element.querySelector("#back-face");
-  back.classList.add("back-flip");
+  back.classList.add("card-selected-back");
+
+  let front = element.querySelector("#front-face");
+  front.classList.add("card-selected-front");
+  
 }
 
