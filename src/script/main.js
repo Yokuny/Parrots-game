@@ -48,12 +48,14 @@ function theCard(id, imgSrc) {
   const frontFaceImg = document.createElement("img");
   frontFaceImg.alt = "Parrot";
   frontFaceImg.src = "./src/img/parrot.svg";
+  frontFaceImg.setAttribute("data-test", "face-down-image");
   const frontFace = document.createElement("div");
   frontFace.classList.add("front-face");
   frontFace.classList.add("face");
   frontFace.appendChild(frontFaceImg);
   const backFaceImg = document.createElement("img");
   backFaceImg.src = imgSrc;
+  backFaceImg.setAttribute("data-test", "face-up-image");
   const backFace = document.createElement("div");
   backFace.classList.add("back-face");
   backFace.classList.add("face");
@@ -61,6 +63,7 @@ function theCard(id, imgSrc) {
   const cardElement = document.createElement("div");
   cardElement.classList.add("card");
   cardElement.id = id;
+  cardElement.setAttribute("data-test", "card");
   cardElement.addEventListener("click", function () {
     cardCheck(this);
   });
@@ -98,23 +101,27 @@ function renderAll(array) {
     canva.appendChild(element);
   });
 }
+// object to control the game
 const gameControl = (cardsAmount) => {
   const getCardQty = () => cardsAmount;
   const visibleCard = [];
-  const clearArray = () => visibleCard.length = 0;
+  const clearArray = () => (visibleCard.length = 0);
   let hits = 0;
   const missCount = () => hits++;
   let qtyFound = 0;
   const hitCount = () => {
     qtyFound++;
-    if(qtyFound == getCardQty()){
-      alert(`Você ganhou\nTentativas: ${hits}\tAcertos: ${qtyFound}`);
+    if (qtyFound == getCardQty()) {
+      alert(`Você ganhou em ${hits} jogadas!`);
+      // alert(`Você ganhou\nTentativas: ${hits}\tAcertos: ${qtyFound}`);
     }
-  }
+  };
   return { getCardQty, visibleCard, clearArray, hitCount, missCount };
 };
 const gc = gameControl(numberOfCards() / 2);
+// starting the game
 renderAll(randomizing(cardElements(amountOfCards(gc.getCardQty()))));
+//
 function cardReveal(card) {
   const back = card.querySelector(".back-face");
   const front = card.querySelector(".front-face");
@@ -129,7 +136,7 @@ function hideCards(element) {
 }
 function eachElementToHide() {
   for (let i = 0; i < gc.visibleCard.length; i++) {
-    setTimeout(hideCards, 800, gc.visibleCard[i]);
+    setTimeout(hideCards, 1000, gc.visibleCard[i]);
   }
 }
 function pairCheck(card) {
