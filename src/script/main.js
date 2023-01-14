@@ -32,7 +32,7 @@ const parrot = (id) => {
 function numberOfCards() {
   let cardAmount = 0;
   while (cardAmount < 4 || cardAmount > 14 || cardAmount % 2 !== 0) {
-    cardAmount = prompt("Digite a quantidade de cards\n(entre 4 a 14)");
+    cardAmount = prompt("Digite a quantidade de cards\n\n\t (entre 4 a 14)");
   }
   return cardAmount;
 }
@@ -91,11 +91,20 @@ function randomizing(array) {
   }
   return array;
 }
+function fieldSize(size) {
+  if (size == 2) {
+    return "size2";
+  } else if (size == 3) {
+    return "size3";
+  } else if (size == 4 || size == 6) {
+    return "size4";
+  } else if (size == 5 || size == 7) {
+    return "size5";
+  }
+}
 function renderAll(array) {
   const canva = document.getElementById("gameCanva");
-  //console.log(array.length % 3);
-  //pensar em forma de selecionar o size
-  canva.classList.add("size4");
+  canva.classList.add(fieldSize(array.length / 2));
   array.forEach((element) => {
     canva.appendChild(element);
   });
@@ -172,7 +181,7 @@ function pairCheck(card) {
 function gameReload() {
   if (gc.hitCount()) {
     while (true) {
-      let answer = prompt("Reiniciar?\nDigite:\tsim\tnão");
+      let answer = prompt("Reiniciar?\n Digite:\t sim\t não");
       if (answer == "não") {
         break;
       } else if (answer == "sim") {
