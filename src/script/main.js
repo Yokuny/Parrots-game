@@ -1,5 +1,5 @@
 const parrot = (id) => {
-  const getId = () => `id0${id}`;
+  const getId = () => `${id}`;
   let src;
   switch (id) {
     case 1:
@@ -58,12 +58,11 @@ function theCard(id, imgSrc, cardNumber) {
   backFaceImg.setAttribute("data-test", "face-up-image");
   const backFace = document.createElement("div");
   backFace.classList.add("back-face");
-  backFace.id = cardNumber;
   backFace.classList.add("face");
   backFace.appendChild(backFaceImg);
   const cardElement = document.createElement("div");
   cardElement.classList.add("card");
-  cardElement.id = id;
+  cardElement.id = `${id}${cardNumber}`;
   cardElement.setAttribute("data-test", "card");
   cardElement.addEventListener("click", function () {
     cardCheck(this);
@@ -153,7 +152,12 @@ function eachElementToHide() {
 function pairCheck(card) {
   gc.visibleCard.push(card);
   if (gc.visibleCard.length == 2) {
-    if (gc.visibleCard[0].id === gc.visibleCard[1].id) {
+    console.log(parseInt(gc.visibleCard[0].id) + 1);
+    console.log(gc.visibleCard[1].id);
+    if (
+      gc.visibleCard[0].id == parseInt(gc.visibleCard[1].id) + 1 ||
+      gc.visibleCard[1].id == parseInt(gc.visibleCard[0].id) + 1
+    ) {
       gc.clearArray();
       gc.missCount();
       return true;
