@@ -34,7 +34,6 @@ function numberOfCards() {
   while (cardAmount < 4 || cardAmount > 14 || cardAmount % 2 !== 0) {
     cardAmount = prompt("Digite a quantidade de cards (entre 4 a 14)");
   }
-  console.log(`>> peguei a quantidade de cards: ${cardAmount}`);
   return cardAmount;
 }
 function amountOfCards(amount) {
@@ -43,37 +42,30 @@ function amountOfCards(amount) {
     const parrotCard = parrot(i);
     cardList.push(parrotCard);
   }
-  console.log(`>> criei objects: ${cardList}`);
   return cardList;
 }
 function theCard(id, imgSrc) {
   const frontFaceImg = document.createElement("img");
   frontFaceImg.alt = "Parrot";
   frontFaceImg.src = "./src/img/parrot.svg";
-
   const frontFace = document.createElement("div");
   frontFace.classList.add("front-face");
   frontFace.classList.add("face");
   frontFace.appendChild(frontFaceImg);
-
   const backFaceImg = document.createElement("img");
   backFaceImg.src = imgSrc;
-
   const backFace = document.createElement("div");
   backFace.classList.add("back-face");
   backFace.classList.add("face");
   backFace.appendChild(backFaceImg);
-
   const cardElement = document.createElement("div");
   cardElement.classList.add("card");
   cardElement.id = id;
   cardElement.addEventListener("click", function () {
     cardCheck(this);
   });
-
   cardElement.appendChild(frontFace);
   cardElement.appendChild(backFace);
-
   return cardElement;
 }
 function cardElements(obj) {
@@ -84,7 +76,6 @@ function cardElements(obj) {
   obj.forEach((element) => {
     allCards.push(theCard(element.getId(), element.src));
   });
-  console.log(`>> transformei tudo em elementos html (cards), e os dupliquei em pares`);
   return allCards;
 }
 // function multiplyElements(elements) {
@@ -94,7 +85,6 @@ function cardElements(obj) {
 //       doubleSize.push(elements[i]);
 //     }
 //   }
-//   console.log(`>> criei pares para as cartas ${doubleSize}`);
 //   return doubleSize;
 // }
 function randomizing(array) {
@@ -118,11 +108,46 @@ function renderAll(array) {
   });
 }
 renderAll(randomizing(cardElements(amountOfCards(numberOfCards() / 2))));
-
-function cardCheck(element) {
-  const back = element.querySelector(".back-face");
-  const front = element.querySelector(".front-face");
+// callBacks
+let visibleCard = [];
+function cardReveal(card) {
+  const back = card.querySelector(".back-face");
+  const front = card.querySelector(".front-face");
   back.classList.add("back-flip");
   front.classList.add("front-flip");
+}
+function hideCards(element) {
+  const back = element.querySelector(".back-face");
+  const front = element.querySelector(".front-face");
+  back.classList.remove("back-flip");
+  front.classList.remove("front-flip");
+}
+function eachElementToHide() {
+  for (let i = 0; i < visibleCard.length; i++) {
+    setTimeout(hideCards, 1000, visibleCard[i]);
+  }
+}
+function pairCheck(card) {
+  visibleCard.push(card);
+  if (visibleCard.length === 2) {
+    if (visibleCard[0].id === visibleCard[1].id) {
+      visibleCard.length = 0;
+      return true;
+    } else {
+      eachElementToHide();
+      visibleCard.length = 0;
+      return false;
+    }
+  }
+  return true;
+}
+function cardCheck(element) {
+  cardReveal(element);
+  let ta = pairCheck(element);
+  if (ta) {
+    console.log("devo contar os acertos aqui");
+  } else {
+    console.log("devo contar as tentativas aqui");
+  }
 }
 
