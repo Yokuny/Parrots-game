@@ -116,12 +116,23 @@ const gameControl = (cardsAmount) => {
       // alert(`Você ganhou\nTentativas: ${hits}\tAcertos: ${qtyFound}`);
     }
   };
-  return { getCardQty, visibleCard, clearArray, hitCount, missCount };
+  let seconds = 0;
+  const playTime = () => {
+    seconds++;
+    return seconds;
+  };
+  return { getCardQty, visibleCard, clearArray, hitCount, missCount, playTime};
 };
 const gc = gameControl(numberOfCards() / 2);
 // starting the game
 renderAll(randomizing(cardElements(amountOfCards(gc.getCardQty()))));
-//
+function setTimer(){
+  const spanTime = document.getElementById("timer");
+  spanTime.textContent = gc.playTime();
+  setTimeout(setTimer, 1000);
+};
+setTimer();
+// game function
 function cardReveal(card) {
   const back = card.querySelector(".back-face");
   const front = card.querySelector(".front-face");
@@ -163,3 +174,4 @@ function cardCheck(element) {
     gc.missCount();
   };
 };
+

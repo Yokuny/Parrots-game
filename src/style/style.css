@@ -4,11 +4,18 @@ body{
     align-items: center;
     flex-direction: column;
 }
+
 body > h1{
+    font-size: min(6.8rem, 10vw);
     margin-top: 40px;
     text-align: center;
     max-width: 60vw;
-    font-size: min(6.8rem, 10vw);
+}
+body > span{
+    position: fixed;
+    right: 16px;
+    top: 16px;
+    font-size: min(5.8rem, 8vw);
 }
 body > main{
     margin: 47px 5vw;
@@ -29,4 +36,9 @@ body > main{
 }
 .size5{
     max-width: calc( (117px + 34px) * 5);
+}
+@media (max-width: 336px) {
+    .mobile-size{
+        flex-direction: column !important;
+    }
 }
