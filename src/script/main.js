@@ -44,7 +44,7 @@ function amountOfCards(amount) {
   }
   return cardList;
 }
-function theCard(id, imgSrc) {
+function theCard(id, imgSrc, cardNumber) {
   const frontFaceImg = document.createElement("img");
   frontFaceImg.alt = "Parrot";
   frontFaceImg.src = "./src/img/parrot.svg";
@@ -58,6 +58,7 @@ function theCard(id, imgSrc) {
   backFaceImg.setAttribute("data-test", "face-up-image");
   const backFace = document.createElement("div");
   backFace.classList.add("back-face");
+  backFace.id = cardNumber;
   backFace.classList.add("face");
   backFace.appendChild(backFaceImg);
   const cardElement = document.createElement("div");
@@ -73,12 +74,11 @@ function theCard(id, imgSrc) {
 }
 function cardElements(obj) {
   let allCards = [];
-  obj.forEach((element) => {
-    allCards.push(theCard(element.getId(), element.src));
-  });
-  obj.forEach((element) => {
-    allCards.push(theCard(element.getId(), element.src));
-  });
+  for (let i = 0; i < 2; i++) {
+    obj.forEach((element) => {
+      allCards.push(theCard(element.getId(), element.src, i));
+    });
+  }
   return allCards;
 }
 function randomizing(array) {
@@ -112,8 +112,8 @@ const gameControl = (cardsAmount) => {
   const hitCount = () => {
     qtyFound++;
     if (qtyFound == getCardQty()) {
-      alert(`Você ganhou em ${hits} jogadas!`);
-      // alert(`Você ganhou\nTentativas: ${hits}\tAcertos: ${qtyFound}`);
+      alert(`Você ganhou em ${hits} jogadas! A duração do jogo foi de ${seconds} segundos!`);
+      return true;
     }
   };
   let seconds = 0;
@@ -121,16 +121,16 @@ const gameControl = (cardsAmount) => {
     seconds++;
     return seconds;
   };
-  return { getCardQty, visibleCard, clearArray, hitCount, missCount, playTime};
+  return { getCardQty, visibleCard, clearArray, hitCount, missCount, playTime };
 };
-const gc = gameControl(numberOfCards() / 2);
 // starting the game
+const gc = gameControl(numberOfCards() / 2);
 renderAll(randomizing(cardElements(amountOfCards(gc.getCardQty()))));
-function setTimer(){
+function setTimer() {
   const spanTime = document.getElementById("timer");
   spanTime.textContent = gc.playTime();
   setTimeout(setTimer, 1000);
-};
+}
 setTimer();
 // game function
 function cardReveal(card) {
@@ -152,9 +152,10 @@ function eachElementToHide() {
 }
 function pairCheck(card) {
   gc.visibleCard.push(card);
-  if (gc.visibleCard.length === 2) {
+  if (gc.visibleCard.length == 2) {
     if (gc.visibleCard[0].id === gc.visibleCard[1].id) {
       gc.clearArray();
+      gc.missCount();
       return true;
     } else {
       eachElementToHide();
@@ -164,14 +165,26 @@ function pairCheck(card) {
   }
   return false;
 }
+function gameReload() {
+  if (gc.hitCount()) {
+    while (true) {
+      let answer = prompt("Reiniciar?\nDigite:\tsim\tnão");
+      if (answer == "não") {
+        break;
+      } else if (answer == "sim") {
+        location.reload();
+      }
+    }
+  }
+}
 // CallBack
 function cardCheck(element) {
   cardReveal(element);
-  const hit = pairCheck(element);
+  let hit = pairCheck(element);
   if (hit) {
-    gc.hitCount();
+    gameReload();
   } else {
     gc.missCount();
-  };
+  }
 };
 
