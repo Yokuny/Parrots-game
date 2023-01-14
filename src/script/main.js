@@ -32,7 +32,7 @@ const parrot = (id) => {
 function numberOfCards() {
   let cardAmount = 0;
   while (cardAmount < 4 || cardAmount > 14 || cardAmount % 2 !== 0) {
-    cardAmount = prompt("Digite a quantidade de cards (entre 4 a 14)");
+    cardAmount = prompt("Digite a quantidade de cards\n(entre 4 a 14)");
   }
   return cardAmount;
 }

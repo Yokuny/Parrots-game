@@ -41,4 +41,18 @@ body > main{
     .mobile-size{
         flex-direction: column !important;
     }
+    body > main{
+        gap: 12px;
+    }
+}
+@media (max-width: 512px) {
+    body > main{
+        margin: 2vw;
+        gap: 6px;
+    }
+}
+@media (max-width: 336px) {
+    body > main{
+        gap: 34px;
+    }
 }
