@@ -78,15 +78,6 @@ function cardElements(obj) {
   });
   return allCards;
 }
-// function multiplyElements(elements) {
-//   const doubleSize = [];
-//   for (let i = 0; i < elements.length; i++) {
-//     for (let j = 0; j < 2; j++) {
-//       doubleSize.push(elements[i]);
-//     }
-//   }
-//   return doubleSize;
-// }
 function randomizing(array) {
   let random;
   let holding;
@@ -107,9 +98,23 @@ function renderAll(array) {
     canva.appendChild(element);
   });
 }
-renderAll(randomizing(cardElements(amountOfCards(numberOfCards() / 2))));
-// callBacks
-let visibleCard = [];
+const gameControl = (cardsAmount) => {
+  const getCardQty = () => cardsAmount;
+  const visibleCard = [];
+  const clearArray = () => visibleCard.length = 0;
+  let hits = 0;
+  const missCount = () => hits++;
+  let qtyFound = 0;
+  const hitCount = () => {
+    qtyFound++;
+    if(qtyFound == getCardQty()){
+      alert(`Você ganhou\nTentativas: ${hits}\tAcertos: ${qtyFound}`);
+    }
+  }
+  return { getCardQty, visibleCard, clearArray, hitCount, missCount };
+};
+const gc = gameControl(numberOfCards() / 2);
+renderAll(randomizing(cardElements(amountOfCards(gc.getCardQty()))));
 function cardReveal(card) {
   const back = card.querySelector(".back-face");
   const front = card.querySelector(".front-face");
@@ -123,31 +128,31 @@ function hideCards(element) {
   front.classList.remove("front-flip");
 }
 function eachElementToHide() {
-  for (let i = 0; i < visibleCard.length; i++) {
-    setTimeout(hideCards, 1000, visibleCard[i]);
+  for (let i = 0; i < gc.visibleCard.length; i++) {
+    setTimeout(hideCards, 800, gc.visibleCard[i]);
   }
 }
 function pairCheck(card) {
-  visibleCard.push(card);
-  if (visibleCard.length === 2) {
-    if (visibleCard[0].id === visibleCard[1].id) {
-      visibleCard.length = 0;
+  gc.visibleCard.push(card);
+  if (gc.visibleCard.length === 2) {
+    if (gc.visibleCard[0].id === gc.visibleCard[1].id) {
+      gc.clearArray();
       return true;
     } else {
       eachElementToHide();
-      visibleCard.length = 0;
+      gc.clearArray();
       return false;
     }
   }
-  return true;
+  return false;
 }
+// CallBack
 function cardCheck(element) {
   cardReveal(element);
-  let ta = pairCheck(element);
-  if (ta) {
-    console.log("devo contar os acertos aqui");
+  const hit = pairCheck(element);
+  if (hit) {
+    gc.hitCount();
   } else {
-    console.log("devo contar as tentativas aqui");
-  }
-}
-
+    gc.missCount();
+  };
+};
