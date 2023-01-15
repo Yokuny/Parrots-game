@@ -200,4 +200,3 @@ function cardCheck(element) {
     gc.missCount();
   }
 };
-
