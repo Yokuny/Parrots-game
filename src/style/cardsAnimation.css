@@ -20,6 +20,9 @@ main .card .face {
     transition: all 700ms;
     transform-style: preserve-3d;
 }
+main .card .back-face img{
+    width: 60%;
+}
 .back-face {
     transform: rotateY(180deg);
 }
